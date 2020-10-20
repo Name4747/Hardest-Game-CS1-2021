@@ -22,27 +22,18 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     private Timer timer;
     private int frameCount = 0;
     private Player player;
-    /*5.a. Declare these variables:
-    ? What is the correct data type for each?
-    -leftWall
-    -rightWall
-    -topWall
-    -leftWall
-    -enemy1
-    -enemy2
-    -start
-    -finish
-    */
+    private Enemy enemy;
+    private Goal start;
+    private Goal finish;
+    private Border border;
+    private final static Color BACK = new Color (182,176,250);
     
     public HardestGame() {
         this.player = new Player(50,300);
-        /*5.b initialize all variables from 5.a
-        ? What values need to be passed to the constructor?
-        -walls form a simple rectangle
-        -enemies somewhat in the middle but spaced apart
-        -start on left side, finish on right
-        -player actually is inside start
-        */
+        this.enemy = new Enemy(400,300,0,-1);
+        this.start = new Goal(0,0,100,600,false);
+        this.finish = new Goal(700,0,100,600,true);
+        this.border = new Border(0,0,800,600);
         timer = new Timer();
         timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/12);
     }
@@ -53,11 +44,18 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
         
         frameCount++;
         
-        this.setBackground(Color.decode("b6b0fa"));		
+        this.setBackground(BACK);		
         
+        border.draw(g);
+        start.draw(g);
+        finish.draw(g);
+        enemy.draw(g);
         player.draw(g);
-        //5.c. draw all objects
         
+        enemy.collideWorldBounds(border);
+        enemy.move();
+        
+        //10. call any methods needed to make interactions happen
     }
      
     private class ScheduleTask extends TimerTask {
@@ -83,7 +81,24 @@ public class HardestGame extends JPanel implements KeyListener, MouseListener {
     
      @Override
     public void keyPressed(KeyEvent e) {
-        System.out.printf("\nKeyCode: %d was pressed",e.getKeyCode());
+        //8.c. update calls to player.move based on 8.b
+        if (e.getKeyCode() == 87) {
+            //up
+            player.move(0, -1, border);
+        }
+        if (e.getKeyCode() == 65) {
+            //left
+            player.move(-1, 0, border);
+        }
+        if (e.getKeyCode() == 83) {
+            //down
+            player.move(0, 1, border);
+        }
+        if (e.getKeyCode() == 68) {
+            //right
+            player.move(1, 0, border);
+        }
+        //System.out.printf("\nKeyCode: %d was pressed",e.getKeyCode());
     }
     
      @Override

@@ -12,13 +12,13 @@ public class Goal {
     private int x, y;
     private final int width, height;
     private final boolean isFinish;
-    private final static Color COLOR = Color.decode("bbffb4");
+    private final static Color COLOR = new Color(187,255,180);
 
     //3.a. constructor for Border
-    public Goal(int x, int y) {
+    public Goal(int x, int y, int width, int height, boolean isFinish) {
         this.isFinish = false;
-        this.width = 50;
-        this.height = 50;
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
     }
